@@ -760,8 +760,7 @@
 			
 		});
 		
-		function updateMapAttivita(){
-			
+		function updateMapAttivita(zoom){
 				var html_mappa='<div id="map-locationsATTIVITA" class="sidebar" style="float:left; width:300px; height:500px; overflow:auto; margin:0px 20px 0px 0px"></div>'+
 				'<div id="map_attivita" style="height:450px; width:550px; float:left"></div> '+
 		    	'<a title="" rel="" class="button" onclick="$(\'#map_container_attivita\').toggle()" style="margin:10px 0px 0px 370px">Chiudi Mappa</a>';
@@ -789,11 +788,12 @@
 				    category_icon_options: function(category){
 						return new google.maps.MarkerImage('source/css/images/attivita.png');				      
 					},
-					side_bar_selector: '#map-locationsATTIVITA:first'
+					side_bar_selector: '#map-locationsATTIVITA:first',
+					force_zoom_level: (!! zoom) ? zoom : null
 				});
 		}
 		
-		function updateMapEventi(){
+		function updateMapEventi(zoom){
 			
 			var html_mappa='<div id="map-locationsEVENTI" class="sidebar" style="float:left; width:300px; height:500px; overflow:auto; margin:0px 20px 0px 0px"></div>'+
 				'<div id="map_eventi" style="height:450px; width:550px; float:left"></div> '+
@@ -822,7 +822,8 @@
 				    category_icon_options: function(category){
 						return new google.maps.MarkerImage('source/css/images/evento.png');				      
 					},
-					side_bar_selector: '#map-locationsEVENTI:first'
+					side_bar_selector: '#map-locationsEVENTI:first',
+					force_zoom_level: (!! zoom) ? zoom : null
 				});
 				
 		}

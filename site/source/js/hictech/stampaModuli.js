@@ -152,11 +152,11 @@
 			        			$(".box_attivita").hide();
 			        			$("#box_attivita_"+id).show();
 			        			if($("#map_container_attivita").is(":visible")){
-			        				updateMapAttivita();
+			        				updateMapAttivita(18);
 			        			}
 			        			else{
 			        				$("#map_container_attivita").slideDown();
-			        				updateMapAttivita();
+			        				updateMapAttivita(18);
 			        				
 			        			}
 			        			
@@ -216,7 +216,7 @@
 				    category_icon_options: function(category){
 						return new google.maps.MarkerImage('source/css/images/attivita.png');				      
 					},
-					side_bar_selector: '#map-locationsATTIVITA:first',
+					side_bar_selector: '#map-locationsATTIVITA:first'
 				});
 				  
 				
@@ -279,7 +279,7 @@
 		              					if(tell!="non presente") html+='<h4>Recapiti: <a  rel="bookmark" >'+tell+'</a></h4>';
 		              					if(cell!="non presente") html+='<h4>Recapiti: <a  rel="bookmark" >'+cell+'</a></h4>';
 										
-										html+='<h4>Indirizzo: <a  rel="bookmark" >'+indirizzo+'</a></h4><div style="width:645px">'+descrizione+'</div>'+
+										html+='<h4>Indirizzo: <a  rel="bookmark" >'+indirizzo+'</a></h4><div style="width:500px">'+descrizione+'</div>'+
 			              				
 			              				'<div style="margin:8px 0px 0px 0px">'+
 			              					'<a title="" rel="" data-id="'+id+'"  data-nome="'+nome+'" class="button button_mappa_singolo">Come raggiungerci</a>';
@@ -291,7 +291,7 @@
 								'</ul>'+
 							 '</div>'+
 							 '<div style="width:210px; float:left;margin:20px -30px 0px -10px"><div class="eventi_attivita_container" style="position:absolute;background-color:#444;padding:5px;width:210px; height:180px;border-radius: 5px; left:675px">'+
-							 	'<div style="-webkit-transform: rotate(-90deg); -moz-transform: rotate(-90deg);position:absolute;top:84px"><font style="font-family: Lobster;color: #7dd2e7; font-size:20px"> Eventi </font></div>'+
+							 	'<div class="vertical_label" style="-webkit-transform: rotate(-90deg); -moz-transform: rotate(-90deg);position:absolute;top:84px"><font style="font-family: Lobster;color: #7dd2e7; font-size:20px"> Eventi </font></div>'+
 							 	'<div id="eventi_attivita_'+id+'" class="lista_eventi_attivita" style="display:none; margin-top:5px"></div>'+
 							 '</div>'+
 							 	
@@ -528,7 +528,21 @@
 				
 				var clonedEl=el.clone();
 				
-				clonedEl.find(".eventi_attivita_container").remove();
+				
+				clonedEl.find(".vertical_label").remove();
+				clonedEl.find(".lista_eventi_attivita").show();
+				
+				clonedEl.find(".lista_eventi_attivita").find("[data-id-evento]").each(function(){
+					$(this).click(function(){
+						var id_evento = $(this).attr("data-id-evento");
+						mostraDettaglioEventoDaDettaglioAttivita($(this),id_evento);
+					})
+				})
+				
+				clonedEl.find(".eventi_attivita_container").css({
+					"left":"540px",
+					"top" : "155px"
+				});
 				clonedEl.find(".button_mappa_attivita").remove();
 				clonedEl.find(".button_mappa_singolo").remove();
 				
@@ -548,7 +562,7 @@
 				.html("chiudi").css({
 					margin :"-5px 0px 0px -100px",
 					color: "#222"
-					});
+					}).attr("data-role","tasto-chiudi-dettaglio");
 				
 				$(this).append(clonedEl);
 				clonedEl.animate({
@@ -578,6 +592,13 @@
 		}
 		
 	
+		function mostraDettaglioEventoDaDettaglioAttivita(el,id_evento){
+			var tasto_chiudi = $(el).parents(".overlay").find("[data-role='tasto-chiudi-dettaglio']");
+			tasto_chiudi.trigger("click");
+			setTimeout(function(){
+				mostraDettaglioEvento($("#box_evento_"+id_evento))
+			},800)
+		}
 			
 			
 			
@@ -638,11 +659,11 @@
 				        			$(".box_evento").hide();
 				        			$("#box_evento_"+id).show();
 				        			if($("#map_container_eventi").is(":visible")){
-				        				updateMapEventi();
+				        				updateMapEventi(18);
 				        			}
 				        			else{
 				        				$("#map_container_eventi").slideDown();
-				        				updateMapEventi();
+				        				updateMapEventi(18);
 				        				
 				        			}
 				        			
@@ -1030,7 +1051,7 @@
 		function pompaListaEventiAttivita(id_attivita,id_evento,nome,data){
 			
 			
-			var tasto=$("<div><div style='padding:5px 0px 0px 5px; margin:0px 0px -3px -3px'>"+data+"</div><div style='font-family: Lobster; font-size:18px;width:190px'><a class='coloreEvento'>"+nome+"</a></div></div>");
+			var tasto=$("<div data-id-evento='"+id_evento+"'><div style='padding:5px 0px 0px 5px; margin:0px 0px -3px -3px'>"+data+"</div><div style='font-family: Lobster; font-size:18px;width:190px'><a class='coloreEvento'>"+nome+"</a></div></div>");
 			
 			tasto.click(function(e){
 				        		e.stopPropagation();
@@ -1045,8 +1066,8 @@
 			
 		}	
 			
-function iconeMacrocategorie(result){
-	
-	
-}
+		function iconeMacrocategorie(result){
+			
+			
+		}
 			
