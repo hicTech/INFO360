@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>.::info360::.</title>
+<body>
+	
+	<script>
+		
+/*
+ *  DEVICE
+ */
+
+
+Device = function(user_agent){
+		
+		var device=this.find(user_agent);
+		
+		this.platform = device.platform;
+		this.engine = device.engine;
+		this.engine_version = device.engine_version;
+			
+	};
+	Device.prototype = {
+		
+		find : function(ua){
+			if(!ua)
+				ua = navigator.userAgent;
+			
+			/* FROM JQUERY: */
+			ua = ua.toLowerCase();
+		
+			var rwebkit = /(webkit)[ \/]([\w.]+)/;
+			var ropera = /(opera)(?:.*version)?[ \/]([\w.]+)/;
+			var rmsie = /(msie) ([\w.]+)/;
+			var rmozilla = /(mozilla)(?:.*? rv:([\w.]+))?/;
+			
+			var match = rwebkit.exec( ua ) ||
+				ropera.exec( ua ) ||
+				rmsie.exec( ua ) ||
+				ua.indexOf("compatible") < 0 && rmozilla.exec( ua ) ||
+				[];
+			var engine = {
+				webkit : (match[1]=="webkit"), 
+				opera : (match[1]=="opera"),
+				msie : (match[1]=="msie"),
+				mozilla : (match[1]=="mozilla") 
+			};
+			var engine_version=match[2] || "0";
+			/* END JQUERY */
+			
+			var riphone = /(iphone)/;
+			var ripad = /(ipad)/;
+			var randroid = /(android)/;
+			var rblackberry = /(blackberry)/;
+			var rios = /(mac os x)[ \w.]+(mobile)/;
+			var rmacos = /(mac os x)/; // less than ios, after in the OR
+			var rlinux = /(linux)/;
+			var rwindows = /(windows)/;
+			match = riphone.exec( ua ) || ripad.exec( ua ) || randroid.exec( ua ) ||
+					rblackberry.exec( ua ) || rios.exec( ua ) || rmacos.exec( ua ) ||
+					rlinux.exec( ua ) || rwindows.exec( ua ) ||	[];
+			var platform = {
+				iphone : (match[1]=="iphone"),
+				ipad : (match[1]=="ipad"),
+				android : (match[1]=="android"),
+				blackberry : (match[1]=="blackberry"),
+				ios : (match.length>2 && match[2]=="mobile"),
+				macos: (match[1]=="macos"),
+				linux : (match[1]=="linux"),
+				windows : (match[1]=="windows")
+			}; 
+			
+			return {engine: engine, engine_version: engine_version, platform: platform};
+		},
+			
+		isMobileWebkit : function(){
+			return (this.platform.ios || this.platform.android || this.platform.blackberry);
+		}
+	
+	};
+	
+
+var Device = new Device();
+
+
+
+	if(Device.platform.ipad || Device.platform.iphone){
+		
+		location.href="app/index.html";
+	}
+	else{
+		location.href="site/index.html";
+	}
+
+
+
+</script>
+	
+	
+	
+</body>
+</html> 
+
+
+
+
+
+		

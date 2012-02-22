@@ -1,0 +1,8 @@
+//
+// Prefix header for all source files of the 'info360' target in the 'info360' project
+//
+
+#ifdef __OBJC__
+    #import <UIKit/UIKit.h>
+    #import <Foundation/Foundation.h>
+#endif

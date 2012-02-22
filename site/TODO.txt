@@ -1,0 +1,20 @@
+
+- il dettaglio attività con una foto si vede la foto sul tasto indietro, sistemare!
+- sistemare ricerca
+- i tastini social ogni tanto vanno sopra il titolo nelle righe attività
+- fatti un giro di FF
+
+
+DA RIRE A FRANS:
+- fanpage per fare quello che volete voi
+- le attività adesso son ordinate per alfabeto
+- materiale da mettere in download
+- il debug lo deve fare dall'app e deve mettere ?debug=true
+- la Locanda il viandante è in mezzo al mare
+- se c'è un evento nel "Locanda il viandante" non ha senso chiamare l'evento "Locanda il viandante Cena a base di Cacciagione" cioè non ha senso ripetere 
+  il nome dell'attività nel nome dell'evento	 
+
+
+Eurostock Le Firme In A
+Lo scrigno di Giada
+Bar Gelateria Cavallotti Cesare

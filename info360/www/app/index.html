@@ -1,0 +1,1584 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>.::info360::.</title>
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" /> 
+<link rel="stylesheet" href="css/hicTech/MobileAppStyle.css"/>
+<link rel="stylesheet" href="css/hicTech/info360.css"/>
+<style type="text/css" media="all">@import "themes/jqt/theme.css";</style>
+<script>
+/*
+	 * WORKBENCH
+	 * WORKBENCH
+	 * WORKBENCH
+	 * WORKBENCH
+	 * 
+	 */
+var time=new Date(); time=time.getTime();
+
+
+
+
+/*
+	 * WORKBENCH
+	 * WORKBENCH
+	 * WORKBENCH
+	 * WORKBENCH
+	 * 
+	 */
+
+var MappaRisultati;
+var deploy_mode=true;  // se true spegne tutti i console.log
+var forza_resfresh=false;
+
+if(getUrlVars()["debug"]=="true"){
+		deploy_mode=false;
+	}
+	
+	
+	function getUrlVars()
+		{
+		    var vars = [], hash;
+		    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+		    for(var i = 0; i < hashes.length; i++)
+		    {
+		        hash = hashes[i].split('=');
+		        vars.push(hash[0]);
+		        vars[hash[0]] = hash[1];
+		    }
+		    return vars;
+		}
+	
+	
+	if (deploy_mode) {
+	    window.console = {};
+	    window.console.log = function(){};
+	}
+</script>
+
+<script type="text/javascript" charset="utf-8" src="js/jquery/jquery-1.4.4-hicVersion-min.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/hicTech/underscore-min.js"></script>
+<script type="text/javascript" src="../commons/jquery.livequery-1.0.3.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/plugins/add2home/add2home.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/pluginJquery/canvasLoader/canvasLoader.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/plugins/jlinq/jlinq.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/plugins/jlinq/jlinq.jquery.js"></script>
+
+
+<!-- info360 -->
+<script type="text/javascript" charset="utf-8" src="js/hicTech/localizzazione.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/hicTech/stampaModuli.js"></script>
+<script type="text/javascript" src="data.js"></script>
+
+<script type="text/javascript" src="../commons/utility.js"></script>
+
+
+
+<script type="text/javascript" charset="utf-8" src="js/hicTech/appManager2.js"></script>
+
+
+
+<script src="http://maps.google.com/maps/api/js?v=3.3&amp;sensor=false&language=it" type="text/javascript"></script> 
+<script type="text/javascript" src="../commons/jmap2.1/markermanager.js"></script>
+<script type="text/javascript" src="../commons/jmap2.1/StyledMarker.js"></script>
+<script type="text/javascript" src="../commons/jmap2.1/jquery.metadata.js"></script>
+<script type="text/javascript" src="../commons/jmap2.1/jquery.jmapping.js"></script>
+
+<script type="text/javascript" src="../commons/info360MapUtils.js"></script>
+
+
+<!-- per appLowCost -->
+<script type="text/javascript" src="../commons/modernizr-1.7.min.js"></script>
+<script type="text/javascript" src="../commons/jquery.pwi.js"></script>
+<script type="text/javascript" src="../commons/google-spreadsheet.js"></script>
+
+
+<script type="text/javascript" src="phonegap.0.9.6.min.js"></script>
+
+<script>
+
+
+
+
+
+
+
+
+function appMLReady(){
+	
+
+	
+	$("body").append('<div class="overlay_NOLANDSCAPE"></div>');
+	
+	
+
+	
+	if(appML.getEnviroment().hasConsolebar && !appML.getEnviroment().isIPad){
+		alert("Per visualizzare correttamente questa applicazione devi disattivare la barra della console di safari");
+		self.location.reload();
+	}
+		
+	
+	jQuery.fn.show = function() {
+	    $(this).css("display","block")
+	}
+	
+	jQuery.fn.hide = function() {
+	    $(this).css("display","none")
+	}
+
+	setTimeout(function(){
+		appML.appManagerShowLoading();
+		setTimeout(function(){
+			appML.appManagerHideLoading();
+		},1800);
+		if(appML.landscapeScreen()){
+           		$(".overlay_NOLANDSCAPE").show();
+           		forza_resfresh=true;
+            }
+            else
+            	$(".overlay_NOLANDSCAPE").hide();
+	},250)
+ 
+	//selettori più usati
+	var $navBar=$("#appML_navigation_bar");	
+	var $appMLwrapper=$("#appML_content_wrapper");
+	var $toolbar=$("#appML_toolbar");
+		
+	
+	var titolo_itinerario="";
+	$("#mapContainer_att:visible").livequery(function(){
+		if($("#page_itinerario").is(":visible")){
+
+			
+			$navBar.hide();
+			
+			var h= parseInt(parseInt($appMLwrapper.css("height"))+42)
+
+			elem.css("width",elem.parent().parent().css("width"));
+			elem.css("height",h)
+			$appMLwrapper.css("height",h)
+			elem.css("top","0px");
+			elem.css("left","0px");
+		}
+
+		$toolbar.hide();
+		$navBar.hide();
+		
+		var elem=$("<div id='map_att'></div>");
+		$(this).append(elem)
+
+		var h= parseInt(parseInt($appMLwrapper.css("height"))+42)
+
+		elem.css("width",elem.parent().parent().css("width"));
+		elem.css("height",h)
+		$appMLwrapper.css("height",h)
+		elem.css("top","0px");
+		elem.css("left","0px");
+		
+		MappaRisultati=stampaMappaRisultati(elem);
+  		setTimeout(function(){MappaRisultati.jMapping('update')},150)
+  				
+  		
+  		
+
+  		
+		$("#side-bar-map-risultati > li").click(function(){
+			var el=$(this);
+			var lat=el.attr("data-lat");	
+			var lon=el.attr("data-lon");
+			var nome=el.attr("data-nome");
+			calcolaPercorso(elem.data('jMapping').map,lat,lon)
+			titolo_itinerario=nome;
+		})
+				
+	});
+	
+	function stampaMappaRisultati(elem){
+		return elem.jMapping({
+						
+					    category_icon_options: function(category){
+										      if (category=="attivita"){
+										        return new google.maps.MarkerImage('img/attivita.png');
+										      } else if (category=="evento"){
+										        return new google.maps.MarkerImage('img/evento.png');
+										      } else {
+										      	if(category=="io"){
+										      		return new google.maps.MarkerImage('img/io.png');
+										      	}
+										      	else
+											        return {color: '#7CDF65'};
+										      }
+						},
+						side_bar_selector: '#side-bar-map-risultati',
+						location_selector: '.location-risultati',
+						link_selector: 'a.map-item-risultati',
+						info_window_selector: '.info-html-risultati',
+						map_config: {
+						      navigationControlOptions: {
+						        style: google.maps.NavigationControlStyle.DEFAULT,
+						      },
+						      mapTypeControl: false,
+						      mapTypeId: google.maps.MapTypeId.ROADMAP
+    					}
+    					
+  					});
+	}
+	
+	/*
+	 * FUNZIONI AL CLICK
+	 */
+	var citta_corrente,categoria_corrente="";
+	
+
+	function attivaRigheCitta(){
+		$("#page_citta > div > ul .riga_citta").each(function(){
+			var el=$(this)
+			var citta=el.attr("data-citta");
+			
+			var n_att_citta=occorrenzeArray(citta,countAttivitaPerCitta);
+			var n_eve_citta=occorrenzeArray(citta,countEventiPerCitta);
+			el.find(".count_att > span").html(n_att_citta);
+			el.find(".count_eve > span").html(n_eve_citta);
+			
+			el.click(function(){
+				appML.appManagerShowLoading();
+				$("#sep_attivita").html("( "+citta+" )");
+				$("#sep_eventi").html("( "+citta+" )");
+				citta_corrente=citta;
+				categoria_corrente="";
+				mostraAttivitaConCitta(citta);
+				mostraEventiConCitta(citta);
+				setTimeout(function(){
+					appML.goTo("#page_risultati","slide")
+				},150)
+				
+			});
+		});
+	}
+	
+	
+	function attivaRigheCategorie(){
+		
+		$("#page_categorie > div > ul .riga_categoria").each(function(){
+			var el=$(this)
+			var categoria=el.attr("data-categoria");
+			
+			var n_att_categoria=occorrenzeArray(categoria,countAttivitaPerCategoria);
+			var n_eve_categoria=occorrenzeArray(categoria,countEventiPerCategoria);
+			el.find(".count_att > span").html(n_att_categoria);
+			el.find(".count_eve > span").html(n_eve_categoria);
+			
+			el.click(function(){
+				appML.appManagerShowLoading();
+				$("#sep_attivita").html("( "+categoria+" )");
+				$("#sep_eventi").html("( "+categoria+" )");
+				categoria_corrente=categoria;
+				citta_corrente="";
+				mostraAttivitaConCategoria(categoria)
+				mostraEventiConCategoria(categoria)
+				setTimeout(function(){
+					appML.goTo("#page_risultati","slide")
+				},150)
+			});
+		});
+	}
+	
+	
+	
+	
+	
+	function mostraAttivitaConCitta(citta){
+		$.each(jsonAttivita, function(){
+			if(this.Citta!=undefined){
+				this.obj.show();
+				if(this.Citta!=citta){
+					this.obj.hide();
+				}
+			}
+		});
+	}
+	
+	function mostraEventiConCitta(citta){	
+		$.each(jsonEventi, function(){
+			citta_evento_corrente=daiCittaEvento(this.Nome_attivita)
+			if(citta_evento_corrente!=undefined){
+				this.obj.show();
+				if(citta_evento_corrente!=citta){
+					this.obj.hide();
+				}
+			}
+		});
+	}
+	
+	function mostraAttivitaConCategoria(categoria){
+		
+		$.each(jsonAttivita, function(){
+			if(this.Categoria!=undefined){
+				this.obj.show();
+				if(this.Categoria!=categoria){
+					this.obj.hide();
+				}
+			}
+		})
+	}
+	
+	function mostraEventiConCategoria(categoria){
+		
+		$.each(jsonEventi, function(){
+			if(this.Categoria!=undefined){
+				this.obj.show();
+				if(this.Categoria!=categoria){
+					this.obj.hide();
+				}
+			}
+		})
+	}
+
+
+	
+	//filter bar 
+	$(".filter_bar_citta_left").each(function(){
+		$(this).click(function(){
+			var $this=$(this);
+			var container_risultati=$("#fragment_attivita_eventi");
+			$(".filter_bar_citta_left").removeClass("button_on")
+			$this.addClass("button_on");
+			if($this.attr("data-id")=="eventi"){
+				container_risultati.prepend($("#fragment_eventi"))
+			}
+			else{
+				container_risultati.prepend($("#fragment_attivita"))
+			}
+		})
+	});
+	
+	
+	function puntoNonPresente(id){
+	
+		for (j in arrPuntiDaCalcolare){
+			if(arrPuntiDaCalcolare[j].id==id)
+				return false
+		}
+		return true;
+			
+	}
+	
+	
+	
+	$(".filter_bar_citta_right").each(function(){
+		$(this).click(function(){
+			var $this=$(this);
+			if($this.attr("data-id")=="tasto_cerca"){
+				appML.appManagerShowSearchBar();
+				$("#search").val("");
+			}
+			else{
+				appML.appManagerShowLoading();
+				setTimeout(function(){
+					var container_risultati=$("#fragment_attivita_eventi");
+					$(".filter_bar_citta_right").removeClass("button_on")
+					$this.addClass("button_on");
+					
+					if($this.attr("data-id")=="tasto_geoloc"){
+						
+						arrPuntiDaCalcolare=new Array();
+						
+						for(i in jsonAttivita){
+							
+							if($(jsonAttivita[i].obj).is(":visible") && jsonAttivita[i].Lat!="non presente" && jsonAttivita[i].Lon!="non presente" ){
+								if(puntoNonPresente(jsonAttivita[i].id)){
+									arrPuntiDaCalcolare.push(
+										{
+											"id" :jsonAttivita[i].id, 
+											"obj":jsonAttivita[i].obj,
+											"lat":jsonAttivita[i].Lat,
+											"lon":jsonAttivita[i].Lon,
+											"caso": "att",
+											"dis":"-"
+										}
+												
+									);
+								}
+							}
+						}
+						
+						for(i in jsonEventi){
+							
+							if($(jsonEventi[i].obj).is(":visible") && daiLatLonEvento(jsonEventi[i].Nome_attivita)[0]!="non presente" && daiLatLonEvento(jsonEventi[i].Nome_attivita)[1]!="non presente"){
+								if(puntoNonPresente(jsonEventi[i].id)){
+									arrPuntiDaCalcolare.push(
+										{
+											"id" :jsonEventi[i].id, 
+											"obj":jsonEventi[i].obj,
+											"lat":daiLatLonEvento(jsonEventi[i].Nome_attivita)[0],
+											"lon":daiLatLonEvento(jsonEventi[i].Nome_attivita)[1],
+											"caso":"eve",
+											"dis":"-"	
+										}
+												
+									);
+								}
+							}
+						}
+						
+						console.log(arrPuntiDaCalcolare)
+						
+					
+						var richieste_da_eseguire=0;
+						directionsServiceDistanza = new google.maps.DirectionsService();
+						for( i in arrPuntiDaCalcolare){
+							if(arrPuntiDaCalcolare[i].dis=="-"){
+								richieste_da_eseguire++;
+								calcolaDistanza(directionsServiceDistanza,arrPuntiDaCalcolare[i].lat,arrPuntiDaCalcolare[i].lon,arrPuntiDaCalcolare[i].caso,arrPuntiDaCalcolare[i].id);
+							}
+								
+						}
+						
+					
+						var tentativi=0;
+						var checkFiniteRichieste=setInterval(function(){
+						console.log("avanzamentoRichiesteDistanza "+avanzamentoRichiesteDistanza);
+						console.log("richieste_da_eseguire "+richieste_da_eseguire);
+						
+						tentativi++;
+						if(tentativi==15){
+							avanzamentoRichiesteDistanza=richieste_da_eseguire
+						}
+						// avanzamentoRichiesteDistanza viene istanziato e fatto il ++ in info360MapUtil.js
+						
+						if(avanzamentoRichiesteDistanza==richieste_da_eseguire){
+								clearInterval(checkFiniteRichieste);
+
+								richieste_da_eseguire=0;
+								avanzamentoRichiesteDistanza=0;
+										
+								  
+								for(i in arrPuntiDaCalcolare){
+									var id=arrPuntiDaCalcolare[i].id;
+									var caso=arrPuntiDaCalcolare[i].caso;
+									DBset("riga_evento_"+id,"")    // mettendo "" nei record local storage forzo il ricalcolo della riga in questione
+									DBset("riga_attivita_"+id,"")  // mettendo "" nei record local storage forzo il ricalcolo della riga in questione
+								}
+								
+
+								ordinaAttivitaPerVicinanza();
+								ordinaEventiPerVicinanza();
+								
+						
+								if(citta_corrente!=""){
+									mostraAttivitaConCitta(citta_corrente);
+									mostraEventiConCitta(citta_corrente);
+								}
+								else{
+									mostraAttivitaConCategoria(categoria_corrente);
+									mostraEventiConCategoria(categoria_corrente);
+								}
+								
+								attivaRigheAttivitaEventi();
+								appML.appManagerHideLoading();
+								
+						}
+					},1000)
+						
+						
+					}
+					
+					if($this.attr("data-id")=="categoria"){
+						ordinaAttivita("Categoria");
+						ordinaEventi("Categoria");
+						mostraAttivitaConCitta(citta_corrente);
+						mostraEventiConCitta(citta_corrente);
+						attivaRigheAttivitaEventi();
+						appML.appManagerHideLoading();
+					}
+					
+					if($this.attr("data-id")=="citta"){
+						ordinaAttivita("Citta");
+						ordinaEventi("Citta");
+						mostraAttivitaConCategoria(categoria_corrente);
+						mostraEventiConCategoria(categoria_corrente);
+						attivaRigheAttivitaEventi();
+						appML.appManagerHideLoading();
+						
+					}
+					
+					if($this.attr("data-id")=="a-z-citta"){
+						ordinaAttivita("Nome");
+						ordinaEventi("Nome_evento");
+						mostraAttivitaConCitta(citta_corrente);
+						mostraEventiConCitta(citta_corrente);
+						attivaRigheAttivitaEventi();
+						appML.appManagerHideLoading();
+					}
+					
+					if($this.attr("data-id")=="a-z-categoria"){
+						ordinaAttivita("Nome");
+						ordinaEventi("Nome_evento");
+						mostraAttivitaConCategoria(categoria_corrente);
+						mostraEventiConCategoria(categoria_corrente);
+						attivaRigheAttivitaEventi();
+						appML.appManagerHideLoading();
+					}
+					
+					if(citta_corrente!=""){
+						$("#sep_attivita").html("( "+citta_corrente+" )");
+						$("#sep_eventi").html("( "+citta_corrente+" )");
+					}
+					else{
+						$("#sep_attivita").html("( "+categoria_corrente+" )");
+						$("#sep_eventi").html("( "+categoria_corrente+" )");
+					}
+					
+				},150);
+			}
+			
+		});
+	});
+
+	
+	
+	
+	$("#tasto_mappa").click(function(){
+		popolaSideBarMappa();//senza parametri mostra tutti gli eventi ed attività presenti nei 'risultati di ricerca'
+		appML.refreshCarousel("#carousel_mappa","console.log('refreshato carousel!');");
+		appML.goTo("#page_mappa_risultati","pop");
+	})
+	
+	$(".grayButton").click(function(){
+		var nome=$(this).attr("data-nome");
+		popolaSideBarMappa(nome);
+		appML.refreshCarousel("#carousel_mappa","console.log('refreshato carousel!');");
+		appML.goTo("#page_mappa_risultati","flip");
+	})
+	
+	
+	
+	$("#tasto_chiudi_mappa").click(function(){
+		var h= parseInt(parseInt($appMLwrapper.css("height"))-42)
+		$appMLwrapper.css("height",h)
+		$toolbar.show();
+		$navBar.show();
+		$(".back").trigger("tap");
+		setTimeout(function(){MappaRisultati.remove()},700)
+	})
+
+	$("#itinerario_button").click(function(){
+		if($("#itinerario").html()==""){
+			appML.appManagerShowDialog({
+				
+	  	    		type                   : "alert", //confirm, select
+	  				title				   : "Attenzione",
+	  				message				   : i18n('Seleziona una destinazione per visualizzarne il percorso')
+			});
+			return false;
+		}
+				
+				
+		$("#titolo_itinerario").html(titolo_itinerario);	
+
+		appML.goTo("#page_itinerario","slideup");
+	})
+	
+	
+
+
+	$("#tasto_chiudi_itinerario").click(function(){
+		$(".back").trigger("tap");
+	})
+		
+	var html_posizione_utente='<li class="location-risultati" style="background:none;" data-lon="'+user_lon+'" data-lat="'+user_lat+'"  data-jmapping="{id: '+Math.floor(Math.random()*1001)+', point: {lng: '+user_lon+', lat: '+user_lat+'}, category: '+"'io'"+'}">'+
+												    '<div href="#" class="map-item-risultati" >'+
+												    	'<div>'+
+												    		'<div style="float:left; margin:5px 3px 0px 0px"><img src="img/io_min.png" /></div>'+
+												    		'<div class="pure_button" style="margin:3px 3px 0px 0px; width:119px">'+i18n("La mia posizione")+'</div>'
+												    	'</div>'+
+												'</li>';
+	$("#side-bar-map-risultati").prepend(html_posizione_utente);
+
+
+	function popolaSideBarMappa(nome){ //se gli si passa un nome di attività o evento viene mostrato solo lui su mappa
+
+		$("#side-bar-map-risultati").html(html_posizione_utente);
+		
+		var tot_eventi=tot_attivita=0;
+		$(".riga_evento").each(function(index){
+			var el=$(this);
+			if(nome){
+				if(nome==el.attr("data-id-evento")){
+					var arrLatLon=daiLatLonEvento(el.attr("data-attivita-evento"))
+					var lat_eve=arrLatLon[0]
+					var lon_eve=arrLatLon[1]
+					var html_posizione_evento='<li class="location-risultati" style="background:none;" data-nome="'+el.attr("data-nome-evento")+'"  data-lon="'+lon_eve+'" data-lat="'+lat_eve+'"  data-jmapping="{id: '+Math.floor(Math.random()*1001)+', point: {lng: '+lon_eve+', lat: '+lat_eve+'}, category: '+"'evento'"+'}">'+
+													    '<div href="#" class="map-item-risultati" >'+
+													    	'<div>'+
+													    		'<div style="float:left; margin:5px 3px 0px 0px"><img src="img/evento_min.png" /></div>'+
+													    		'<div class="pure_button" style="margin:3px 3px 0px 0px; width:119px; text-overflow: ellipsis;overflow:hidden; ">'+el.attr("data-nome-evento")+'</div>'
+													    	'</div>'+
+													'</li>';
+					tot_eventi++;								
+					$("#side-bar-map-risultati").append(html_posizione_evento);
+					return false;
+				}
+			}
+			else{
+				if(el.is(":visible")){
+					var arrLatLon=daiLatLonEvento(el.attr("data-attivita-evento"))
+					var lat_eve=arrLatLon[0]
+					var lon_eve=arrLatLon[1]
+					var html_posizione_evento='<li class="location-risultati" style="background:none;" data-nome="'+el.attr("data-nome-evento")+'"  data-lon="'+lon_eve+'" data-lat="'+lat_eve+'"  data-jmapping="{id: '+Math.floor(Math.random()*1001)+', point: {lng: '+lon_eve+', lat: '+lat_eve+'}, category: '+"'evento'"+'}">'+
+													    '<div href="#" class="map-item-risultati" >'+
+													    	'<div>'+
+													    		'<div style="float:left; margin:5px 3px 0px 0px"><img src="img/evento_min.png" /></div>'+
+													    		'<div class="pure_button" style="margin:3px 3px 0px 0px; width:119px; text-overflow: ellipsis;overflow:hidden; ">'+el.attr("data-nome-evento")+'</div>'
+													    	'</div>'+
+													'</li>';
+					tot_eventi++;								
+					$("#side-bar-map-risultati").append(html_posizione_evento);
+					
+				}
+			}
+			
+		});
+		
+		
+		
+		
+		
+		$(".riga_attivita").each(function(index){
+			
+				
+			var el=$(this);
+			if(nome){
+				if(nome==el.attr("data-id-attivita")){
+					var html_posizione_attivita='<li class="location-risultati" style="background:none;" data-albumPicasa="'+el.attr("data-id")+'" data-nome="'+el.attr("data-nome")+'" data-lon="'+el.attr("data-lon")+'" data-lat="'+el.attr("data-lat")+'"  data-jmapping="{id: '+Math.floor(Math.random()*1001)+', point: {lng: '+el.attr("data-lon")+', lat: '+el.attr("data-lat")+'}, category: '+"'attivita'"+'}">'+
+													    '<div href="#" class="map-item-risultati" >'+
+													    	'<div>'+
+													    		'<div style="float:left; margin:5px 3px 0px 0px"><img src="img/attivita_min.png" /></div>'+
+													    		'<div class="pure_button" style="margin:3px 3px 0px 0px; width:119px; text-overflow: ellipsis;overflow:hidden; ">'+el.attr("data-nome")+'</div>'
+													    	'</div>'+
+													'</li>';
+					tot_attivita++;								
+					$("#side-bar-map-risultati").prepend(html_posizione_attivita);
+					return false;
+				}
+			}
+			else{
+				if(el.is(":visible")){
+					
+					var html_posizione_attivita='<li class="location-risultati" style="background:none;" data-albumPicasa="'+el.attr("data-id")+'" data-nome="'+el.attr("data-nome")+'" data-lon="'+el.attr("data-lon")+'" data-lat="'+el.attr("data-lat")+'"  data-jmapping="{id: '+Math.floor(Math.random()*1001)+', point: {lng: '+el.attr("data-lon")+', lat: '+el.attr("data-lat")+'}, category: '+"'attivita'"+'}">'+
+													    '<div href="#" class="map-item-risultati" >'+
+													    	'<div>'+
+													    		'<div style="float:left; margin:5px 3px 0px 0px"><img src="img/attivita_min.png" /></div>'+
+													    		'<div class="pure_button" style="margin:3px 3px 0px 0px; width:119px; text-overflow: ellipsis;overflow:hidden; ">'+el.attr("data-nome")+'</div>'
+													    	'</div>'+
+													'</li>';
+					tot_attivita++;								
+					$("#side-bar-map-risultati").prepend(html_posizione_attivita);
+				}				
+			}
+			
+				
+			
+		});
+		
+		//nel caso di più elemnti sulla mappa questo stampa i totali di eventi ed attività
+		//$("#info_risultati_mappa").html(+tot_attivita+" <b>Attivita</b> e "+tot_eventi+" <b>Eventi</b>")
+		$("#info_risultati_mappa").html("▲ Seleziona un elemento dal carousel superiore ▲")
+		
+	}
+
+
+	appML.makeCarousel("#carousel_mappa","console.log('fatto carousel3!')",205,42);
+	
+	
+	
+	appML.addPageListener(function(id_page){
+		
+		if(id_page=="page_risultati"){
+			
+		}
+		
+	});
+	
+
+	
+	
+	
+	var appMLWrapperWidth=$appMLwrapper.css("width").replace("px","");
+	var appMLWrapperHeight=$appMLwrapper.css("height").replace("px","")
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/*
+	 * ################ CITTA (page di secondo livello)
+	 */
+	var fatto=false;
+	function creaPaginaDiSecondoLivello(){
+		if(!fatto){
+			fatto=true;
+			creaAttivita();
+			creaEventi();
+		}
+	}
+
+	
+	$("#tasto_citta").click(function(){
+		appML.appManagerShowLoading();
+		setTimeout(function(){
+			creaPaginaDiSecondoLivello();
+			attivaRigheCitta();
+			appML.goTo("#page_citta","slide");
+		},250)
+	});
+	
+	
+
+	appML.onPage("page_citta",function(id_page){
+		resettaRicerca();
+		$("[data-id=tasto_geoloc]").removeClass("button_on")
+		$("[data-id=citta]").hide();
+		$("[data-id=categoria]").show();
+		$("[data-id=a-z-categoria]").hide();
+		$("[data-id=a-z-citta]").show();
+		citta_corrente,categoria_corrente="";
+		var scrollable=$("#page_citta_c");
+		if(!scrollable.parent().is(".iscroll_container")){			
+			setTimeout(function(){
+				appML.makeScrollable(scrollable,"appML.appManagerHideLoading();",appMLWrapperWidth,appMLWrapperHeight);
+			},300)
+		}
+		else{
+			appML.appManagerHideLoading();
+		}
+	});
+	
+	
+	
+	/*
+	 * ################ CATEGORIE (page di secondo livello)
+	 */
+	
+	$("#tasto_categorie").click(function(){
+		appML.appManagerShowLoading();
+		setTimeout(function(){
+			creaPaginaDiSecondoLivello();
+			attivaRigheCategorie();
+			appML.goTo("#page_categorie","slide");
+		},250)
+	});
+	
+
+	
+	appML.onPage("page_categorie",function(id_page){ 
+		resettaRicerca();
+		$("[data-id=tasto_geoloc]").removeClass("button_on")
+		$("[data-id=citta]").show();
+		$("[data-id=categoria]").hide();
+		$("[data-id=a-z-citta]").hide();
+		$("[data-id=a-z-categoria]").show();
+		citta_corrente,categoria_corrente="";
+		var scrollable=$("#page_categorie_c");
+		if(!scrollable.parent().is(".iscroll_container")){
+			setTimeout(function(){
+				appML.makeScrollable(scrollable,"appML.appManagerHideLoading();",appMLWrapperWidth,appMLWrapperHeight);
+			},300)
+			
+		}
+		else{
+			appML.appManagerHideLoading();
+		}
+	});
+	
+	
+	/*
+	 * ################ RISULTATI (page di terzo livello)
+	 */
+	
+	appML.onPage("page_risultati",function(id_page){ 
+		var scrollable=$("#fragment_attivita_eventi");
+		attivaRigheAttivitaEventi();
+		if( appML.proveniencePage().attr("id")=="page_mappa_risultati" || appML.proveniencePage().attr("id")=="page_dettaglio")
+			return null;
+
+		if(scrollable.parent().is(".iscroll_container")){
+			setTimeout(function(){
+				appML.refreshScrollable(scrollable,"appML.appManagerHideLoading()");
+			},30)
+		}
+		else{
+			setTimeout(function(){
+				appML.makeScrollable(scrollable,"appML.appManagerHideLoading()",appMLWrapperWidth,appMLWrapperHeight);
+			},30)
+		}	
+		
+	});
+	
+	function caricaFotoInViewport(){
+		for(var i=0; i<arrPosition.length;i++){
+			if((parseInt(appML.getCurrentViewport().t_l[1]) < arrPosition[i][1]) && (arrPosition[i][1] < parseInt(appML.getCurrentViewport().b_l[1])) ){
+				if(arrPosition[i][2].find(".thumb_loading_image").html()!=null && arrPosition[i][2].is(":visible")){
+					arrPosition[i][2].find(".thumb_attivita").pwi({
+						            username: commonsSettings.picasaUser,
+						            mode: 'albumsWithLocalStorageCache',
+									albumThumbSize: 37,
+						            albums: ["Att"+arrPosition[i][0]],
+						            showAlbumTitles: false,
+						            onclickAlbumThumb: function (e) {
+						                return false;
+						            }
+						          });
+						}
+			}
+		}		
+	}
+	
+	
+	/*
+	 * ################### DETTAGLIO (page di quarto livello)
+	 */
+	
+	
+	
+	
+	
+	//page_dettaglio_c
+	appML.onPage("page_dettaglio",function(id_page){ 
+
+		var scrollable=$("#page_dettaglio_c");
+		if(appML.proveniencePage().attr("id")=="page_mappa_risultati"){
+			return null;
+		}
+		if(scrollable.parent().is(".iscroll_container")){
+			setTimeout(function(){
+				appML.refreshScrollable(scrollable,"appML.appManagerHideLoading();");
+			},30);
+		}
+		if(!scrollable.parent().is(".iscroll_container")){
+			setTimeout(function(){
+				appML.makeScrollable(scrollable,"appML.appManagerHideLoading();",appMLWrapperWidth,appMLWrapperHeight);
+			},30)	
+		}
+	});
+	
+	
+	function attivaRigheAttivitaEventi(){
+		$(".riga_attivita,.riga_evento").each(function(){
+			$(this).unbind("click");
+		});
+	
+		$(".riga_attivita").each(function(){
+			var $this=$(this);
+			$(this).bind("click", function(){
+				appML.appManagerShowLoading();
+				
+				var id_att=$(this).attr("data-id-attivita");
+				var json_att=daiAttivita(id_att);
+				
+				/// spengo il dettaglio evento e accendo quello attività
+				$("#dettaglio_attivita").show();
+				$("#dettaglio_evento").hide();
+				
+				// pompo i valori nella scheda dettaglio attività
+				$("#nome_dettaglio_att").html(json_att.Nome);
+				$("#categoria_dettaglio_att").html(json_att.Categoria);
+				$("#citta_dettaglio_att").html(json_att.Citta);
+				$("#indirizzo_dettaglio_att").html(json_att.Indirizzo);
+				$("#descrizione_dettaglio_att").html(json_att.Descrizione);
+				
+				// pompo i tasti tell,cell e email
+				var tell=$("#tell_dettaglio_att")
+				var cell=$("#cell_dettaglio_att")
+				var email=$("#email_dettaglio_att")
+				var mappa=$("#mappa_dettaglio_att")
+				
+				tell.hide();
+				cell.hide();
+				email.hide();
+				mappa.hide();
+				
+				if(json_att.Tell!=stringa_valore_non_presente){
+					tell.show();
+					tell.attr("href","tel:"+json_att.Tell)
+				}
+					
+				if(json_att.Cell!=stringa_valore_non_presente){
+					cell.show();
+					cell.attr("href","tel:"+json_att.Cell)
+				}
+					
+				if(json_att.Email!=stringa_valore_non_presente){
+					email.show();
+					email.attr("href","mailto:"+json_att.Email);
+				}
+				
+				// setto il tasto per vedere questa attività su mapp
+				if(json_att.Lat!=stringa_valore_non_presente && json_att.Lon!=stringa_valore_non_presente){
+					mappa.show();
+					mappa.attr("data-nome",id_att)
+				}
+				
+				
+				
+				//scarico e pompo le foto dell'attività
+				var nomeAlbum="Att"+id_att;
+				console.log("__NOTA__: cerco l'album "+nomeAlbum);
+				$("#foto_attivita > ul").html("");
+				$(".carousel_indicator").html("");
+				$("#foto_attivita > ul").pwi({
+						username: commonsSettings.picasaUser,
+						showSlideshowLink: false,
+						showAlbumdate: false,
+				        showAlbumPhotoCount: false,
+				        showAlbumDescription: false,
+				        showAlbumLocation: false,
+						maxresults: 50,
+						thumbSize: 260,
+						mode: 'appMLcarousel',
+						album: nomeAlbum
+				});
+
+				appML.goTo("#page_dettaglio","slide");
+			});
+			
+		});
+		
+		$(".riga_evento").each(function(){
+			var $this=$(this);
+			$(this).bind("click", function(){
+				appML.appManagerShowLoading();
+				
+				var id_eve=$(this).attr("data-id-evento");
+				var json_eve=daiEvento(id_eve);
+				
+				/// spengo il dettaglio attività e accendo quello dell'evento 
+				$("#dettaglio_attivita").hide();
+				$("#dettaglio_evento").show();
+				
+				// pompo i valori nella scheda dettaglio evento
+				$("#nome_dettaglio_eve").html(json_eve.Nome_evento);
+				$("#attivita_dettaglio_eve").html(json_eve.Nome_attivita);
+				$("#categoria_dettaglio_eve").html(json_eve.Categoria);
+				$("#citta_dettaglio_eve").html(json_eve.Citta);
+				$("#descrizione_dettaglio_eve").html(json_eve.Descrizione);
+				
+				// pompo i tasti tell,cell e email
+				var tell=$("#tell_dettaglio_eve")
+				var cell=$("#cell_dettaglio_eve")
+				var email=$("#email_dettaglio_eve")
+				var mappa=$("#mappa_dettaglio_eve")
+				
+				tell.hide();
+				cell.hide();
+				email.hide();
+				mappa.hide();
+				
+				if(json_eve.Tell!=stringa_valore_non_presente){
+					tell.show();
+					tell.attr("href","tel:"+json_eve.Tell)
+				}
+					
+				if(json_eve.Cell!=stringa_valore_non_presente){
+					cell.show();
+					cell.attr("href","tel:"+json_eve.Cell)
+				}
+					
+				if(json_eve.Email!=stringa_valore_non_presente){
+					email.show();
+					email.attr("href","mailto:"+json_eve.Email);
+				}
+				
+				// setto il tasto per vedere questa attività su mapp
+				if(json_eve.Lat!=stringa_valore_non_presente && json_eve.Lon!=stringa_valore_non_presente){
+					mappa.show();
+					mappa.attr("data-nome",id_eve)
+				}
+					
+				
+				
+				//scarico e pompo le foto dell'attività
+				var nomeAlbum="Eve"+id_eve;
+				console.log("__NOTA__: cerco l'album "+nomeAlbum)
+				$("#foto_evento > ul").html("");
+				$(".carousel_indicator").html("");
+				$("#foto_evento > ul").pwi({
+						username: commonsSettings.picasaUser,
+						showSlideshowLink: false,
+						showAlbumdate: false,
+				        showAlbumPhotoCount: false,
+				        showAlbumDescription: false,
+				        showAlbumLocation: false,
+						maxresults: 50,
+						thumbSize: 260,
+						mode: 'appMLcarousel',
+						album: nomeAlbum
+				});
+
+				appML.goTo("#page_dettaglio","slide");
+			})
+			
+		})
+		
+		
+		
+		
+	}
+	
+	
+	
+	/*
+	 * ##################### ITINERARIO
+	 */
+	appML.onPage("page_itinerario",function(id_page){ 
+		$appMLwrapper.css("top",0)
+		var width=$appMLwrapper.css("width")
+		var height= parseInt($appMLwrapper.css("height").replace("px","")-255);
+		$("#itinerario").find("table").each(function(){
+			var $this=$(this)
+			if($this.attr("class")=="adp-directions"){   
+				setTimeout(function(){
+					appML.makeScrollable($this,"console.log('fatto scrollable!')",width,height);
+				},100)
+			}
+		});
+	});
+	
+
+	
+	/*
+	 * RICERCA
+	 */
+	
+	var query_result_Attivita,query_result_Eventi;
+	var risultati_di_ricerca_presenti=false;
+	
+	$("#reset_ricerca").livequery("click",function(){
+		$("#search").val("");
+		$("#ok_ricerca").trigger("click");
+	})
+	
+	$("#ok_ricerca").livequery("click",function(){
+		var txt=$("#search").val();
+		
+		if(txt.indexOf(" ")!=-1){
+			appML.appManagerShowDialog({
+	  	    		type                   : "alert", //confirm, select
+	  				title				   : i18n("Attenzione")+"!",
+	  				confirmCallback        : function(){},
+	  				message				   : "<font style='font-size:14px'>"+i18n('Il campo di ricerca contiene uno spazio! inserisci una sola parola.')+"</font>"
+			});
+			appML.appManagerHideSearchBar();
+			return false;
+		}
+		if(txt.length<3){
+			if(txt.length==0){
+				appML.appManagerHideSearchBar();
+				return false;
+			}
+			appML.appManagerShowDialog({
+	  	    		type                   : "alert", //confirm, select
+	  				title				   : i18n("Attenzione")+"!",
+	  				confirmCallback        : function(){},
+	  				message				   : "<font style='font-size:14px'>"+i18n('La parola da ricercare deve contenere almeno 3 caratteri')+"</font>"
+			});
+			appML.appManagerHideSearchBar();
+			return false;
+		}
+		
+		appML.scrollTop($("#sep_att"));
+		// nel caso di ricerca con città fissata (cioè proveniente dalla ricerca per città)
+		if(citta_corrente!=""){
+			query_result_Attivita=jlinq.from(jsonAttivita)
+									   .contains("Tag",txt)
+									   .or()
+									   .contains("Nome",txt)
+									   .or()
+									   .contains("Categoria",txt)
+									   .select();
+									   
+			query_result_Attivita=jlinq.from(query_result_Attivita)
+									   .contains("Citta",citta_corrente)
+									   .select();
+									   
+			query_result_Eventi=jlinq.from(jsonEventi)
+									   .contains("Tag",txt)
+									   .or()
+									   .contains("Nome_evento",txt)
+									   .or()
+									   .contains("Categoria",txt)
+									   .select();
+									   
+			query_result_Eventi=jlinq.from(query_result_Eventi)
+									   .contains("Citta",citta_corrente)
+									   .select();
+									   
+									   
+			if(query_result_Attivita.length>0 || query_result_Eventi.length>0){
+				$("#search_filter_bar").show();
+				$("#normal_filter_bar").hide();
+				$("#resetta_ricerca").bind("click",function(){
+					resettaRicerca();
+					$("#resetta_ricerca").unbind("click")
+				})
+				$("#fragment_attivita").css("opacity","0.2");
+				$("#fragment_eventi").css("opacity","0.2");
+				risultati_di_ricerca_presenti=true;
+			}
+			else{
+				appML.appManagerShowDialog({
+	  	    		type                   : "alert", //confirm, select
+	  				title				   : i18n("Attenzione")+"!",
+	  				confirmCallback        : function(){},
+	  				message				   : "<font style='font-size:14px'>"+i18n('Nessun risultato trovato')+"</font>"
+				});
+				appML.appManagerHideSearchBar();
+				return false;	
+			}
+									   
+			
+			if(query_result_Eventi.length>0){
+				$("#risultati_ricerca_eventi").html("<li class='sep' style='text-align:center; color:#c07d00'>"+i18n('Eventi trovati per')+":<span id='sep_risultati_ricerca_eventi' style='font-size:12px; color:#fff'> "+txt+"</span></li>")
+				for(var i=0;i<query_result_Eventi.length;i++){
+					var obj_risultato_ricerca = query_result_Eventi[i].obj;
+					$("#risultati_ricerca_eventi").append(obj_risultato_ricerca);
+				}
+				$("#fragment_attivita_eventi").prepend($("#risultati_ricerca_eventi"))
+			}
+									   
+			if(query_result_Attivita.length>0){
+				$("#risultati_ricerca_attivita").html("<li class='sep' style='text-align:center; color:#c07d00'>"+i18n('Attività trovate per')+":<span id='sep_risultati_ricerca_attivita' style='font-size:12px; color:#fff'> "+txt+"</span></li>")
+				for(var i=0;i<query_result_Attivita.length;i++){
+					var obj_risultato_ricerca = query_result_Attivita[i].obj;
+					$("#risultati_ricerca_attivita").append(obj_risultato_ricerca);
+				}
+				$("#fragment_attivita_eventi").prepend($("#risultati_ricerca_attivita"))
+			}
+			
+			
+		}
+		
+		else{// nel caso di ricerca con categoria fissata (cioè proveniente dalla ricerca per categoria)
+			query_result_Attivita=jlinq.from(jsonAttivita)
+									   .contains("Tag",txt)
+									   .or()
+									   .contains("Nome",txt)
+									   .or()
+									   .contains("Citta",txt)
+									   .select();
+									   
+			query_result_Attivita=jlinq.from(query_result_Attivita)
+									   .contains("Categoria",categoria_corrente)
+									   .select();
+									   
+			query_result_Eventi=jlinq.from(jsonEventi)
+									   .contains("Tag",txt)
+									   .or()
+									   .contains("Nome_evento",txt)
+									   .or()
+									   .contains("Citta",txt)
+									   .select();
+									   
+			query_result_Eventi=jlinq.from(query_result_Eventi)
+									   .contains("Categoria",categoria_corrente)
+									   .select();
+									   
+									   
+			if(query_result_Attivita.length>0 || query_result_Eventi.length>0){
+				$("#search_filter_bar").show();
+				$("#normal_filter_bar").hide();
+				$("#resetta_ricerca").bind("click",function(){
+					resettaRicerca();
+					$("#resetta_ricerca").unbind("click")
+				})
+				$("#fragment_attivita").css("opacity","0.2");
+				$("#fragment_eventi").css("opacity","0.2");
+				risultati_di_ricerca_presenti=true;
+			}
+			else{
+				appML.appManagerShowDialog({
+	  	    		type                   : "alert", //confirm, select
+	  				title				   : i18n("Attenzione")+"!",
+	  				confirmCallback        : function(){},
+	  				message				   : "<font style='font-size:14px'>"+i18n('Nessun risultato trovato')+"</font>"
+				});
+				appML.appManagerHideSearchBar();
+				return false;	
+			}
+									   
+			
+			if(query_result_Eventi.length>0){
+				$("#risultati_ricerca_eventi").html("<li class='sep' style='text-align:center; color:#c07d00'>Eventi per:<span id='sep_risultati_ricerca_eventi' style='font-size:12px; color:#fff'> "+txt+"</span></li>")
+				for(var i=0;i<query_result_Eventi.length;i++){
+					var obj_risultato_ricerca = query_result_Eventi[i].obj;
+					$("#risultati_ricerca_eventi").append(obj_risultato_ricerca);
+				}
+				$("#fragment_attivita_eventi").prepend($("#risultati_ricerca_eventi"))
+			}
+									   
+			if(query_result_Attivita.length>0){
+				$("#risultati_ricerca_attivita").html("<li class='sep' style='text-align:center; color:#c07d00'>Attività per:<span id='sep_risultati_ricerca_attivita' style='font-size:12px; color:#fff'> "+txt+"</span></li>")
+				for(var i=0;i<query_result_Attivita.length;i++){
+					var obj_risultato_ricerca = query_result_Attivita[i].obj;
+					$("#risultati_ricerca_attivita").append(obj_risultato_ricerca);
+				}
+				$("#fragment_attivita_eventi").prepend($("#risultati_ricerca_attivita"))
+			}
+		}
+
+		appML.appManagerHideSearchBar();
+	});
+	
+	
+	function resettaRicerca(){
+		if(risultati_di_ricerca_presenti){
+			appML.appManagerShowLoading();
+			setTimeout(function(){
+				console.log("RESETTO RICERCA")
+				query_result_Attivita,query_result_Eventi="";
+				$("#search_filter_bar").hide();
+				$("#normal_filter_bar").show();
+				$("#fragment_attivita").css("opacity","1");
+				$("#fragment_eventi").css("opacity","1");
+				$("#risultati_ricerca_attivita,#risultati_ricerca_eventi").html("");
+				//$("#fragment_attivita").find(".sep").after($("#risultati_ricerca_attivita").html());
+				//$("#fragment_eventi").find(".sep").after($("#risultati_ricerca_eventi").html());
+				$("#risultati_ricerca_attivita,#risultati_ricerca_eventi").html("");
+				risultati_di_ricerca_presenti=false;
+				
+				
+				if(citta_corrente){
+					$("[data-id=a-z-citta]").trigger("click")
+				}
+				else{
+					$("[data-id=a-z-categoria]").trigger("click")
+				}
+				
+			},100)
+		}
+		
+	}
+
+
+	
+	
+	
+	/*
+	 * LOCALIZZAZIONE
+	 */
+	
+	traduciApp();
+	
+	function traduciApp(){
+		$(".i18n").each(function(){
+			$(this).html(i18n($(this).html()));
+		})
+		
+		$(".appML_toolbar_label > font").each(function(){
+			$(this).html(i18n($(this).html()));
+		})
+	}
+
+	//overlay
+	$("body").append('<div id="overlay" class="overlay"><div style="width:32px; margin:0px auto" class="spinning_loading_container"><div class="spinning_loading"></div></div></div>')
+
+	//search
+	var html_search_bar='<div id="overlay_search" class="overlay_search">'+
+							'<div id="searchbox" class="searchbox">'+
+								'<div style="width: 310px;margin: 0px auto;">'+
+									'<div style="float:left">'+
+										'<form id="search_form" style="float:left">'+
+										'<input id="search" placeholder="search" type="text">'+
+									'</form>'+
+									'</div>'+
+									'<div style="float:left">'+
+										'<div class="pure_button" id="ok_ricerca" style="float:left; width:20px; margin:8px 0px 0px 5px">Ok</div>'+
+										'<div class="pure_button_red" id="reset_ricerca" style="float:left; width:30px; margin:8px 0px 0px 5px">'+i18n("chiudi")+'</div>'+
+									'</div>'
+								'</div>'+
+							'</div>'+
+							/*'<div id="tributton" style="padding-top:4px">'+
+								'<div class="links">'+
+									'<a id="pressed">Tutto</a>'+
+									'<a>Attività</a>'+
+									'<a>Eventi</a>'+
+								'</div>'+
+							'</div>'+*/
+						'</div>';
+						
+						
+	$("body").append(html_search_bar)
+	
+	$("#search_form").submit(function(event) {
+	  $("#search").blur();
+	  event.preventDefault();
+	  $("#ok_ricerca").trigger("click");
+	});
+	
+	$("#overlay_search").click(function(event){
+		$("#reset_ricerca").trigger("click");
+  		event.stopPropagation();
+	});  
+	
+	$("#searchbox").click(function(event){
+  		event.stopPropagation();
+  		// do something
+	});  
+	
+
+		
+	
+
+	/*
+	 * WORKBENCH
+	 * WORKBENCH
+	 * WORKBENCH
+	 * WORKBENCH
+	 * 
+	 */
+	var time2=new Date(); time2=time2.getTime();
+	console.log(time2-time)
+	
+	/*
+	 * WORKBENCH
+	 * WORKBENCH
+	 * WORKBENCH
+	 * WORKBENCH
+	 * 
+	 */	
+
+
+}
+
+
+
+</script>
+
+
+</head>
+
+<body data-appml-onload="appMLReady()">
+
+<appml>
+	<loading></loading>
+	<content>
+	<navigation height="43px"></navigation>
+	
+		
+		<panel id="home" title="Home" icon="info360.png">
+			
+			
+			<!-- HOME -->
+			<page id="page_home" title="homeTitle">
+				
+				<div class="info" style="padding:0px">
+					
+					
+					<div style="margin:-45px 0px 0px -40px"><img src="img/logoInfo360.png"/></div>
+					<div style="margin-top:-65px; padding:10px"><br><spna class="i18n">Scopri come è semplice e divertente ricercare i tuoi eventi preferiti e le attività più vicine a te consigliate dal network info360. Da oggi in poi tutte le informazioni per il tuo tempo libero sono a portata di dito!</spna></div>
+					<div style="background-image:url(img/sfondo_header_piccolo_home.png); width:100%; height:30px; padding-top:7px">
+						<div style="background-image:url(img/voci_header_piccolo_home.png); width:302px; height:25px; margin:0px auto">
+							<div style="padding-top:2px;width:302px; margin:0px auto;position:relative">
+								<span style="position:absolute; left:29px" class='i18n'>La mia posizione</span>
+								<span style="position:absolute; left:165px" class='i18n'>Attività</span>
+								<span style="position:absolute; left:252px" class='i18n'>Eventi</span>
+								
+							</div>
+						</div>
+					</div>
+					
+				</div>
+				<div  style="padding:5px 15px; width:290px; margin:0px auto" >
+					<div  id="tasto_citta">
+						<div style="background-image:url(img/ricerca_citta.png); width:260px; height:31px; padding:10px 0px 0px 30px; color: #999;text-shadow: 0 -1px 0 black;text-align: center; font-size:16px"><span class="i18n">Ricerca per Città</span></div>
+					</div>
+					<div  id="tasto_categorie" style="margin-top:10px">
+						<div style="background-image:url(img/ricerca_categoria.png); width:260px; height:31px; padding:10px 0px 0px 30px; color: #999;text-shadow: 0 -1px 0 black;text-align: center; font-size:16px"><span class="i18n">Ricerca per Categoria</span></div>
+					</div>
+					<div  id="" onclick="DBclear();self.location.reload()" style="margin-top:10px">
+						<div class="tasto_ricarica" ><div style="margin-top:-7px"><div class="i18n">In questo momento ci sono</div><span class="arancio" id="tot_attivita">145</span> <span class="i18n">Attività</span> e <span class="arancio" id="tot_eventi">98</span> <span class="i18n">Eventi</span></div></div>
+					</div>
+					
+					
+					
+				</div>
+
+			</page>
+			
+			<!-- CITTA' -->
+			<page id="page_citta" title="Città" scrollable="false">
+				<div id="page_citta_c">
+					<ul class="plastic"></ul>
+				</div>	
+			</page>
+			
+			<!-- CATEGORIE -->
+			<page id="page_categorie" title="Categorie" scrollable="false">
+				<div id="page_categorie_c">
+					<ul class="plastic"></ul>
+				</div>
+			</page>
+			
+			<!-- MAPPA -->
+			<page id="page_mappa_risultati" title="Mappa" scrollable="false"> 
+				<div id="mapContainer_att" >
+					<div class="info_risultati_mappa" id="info_risultati_mappa"></div>
+					<div style="position:absolute; top:0px;  width:100%; background: rgba(0, 0, 0, 0.75); height:51px;z-index:50000">
+						<div style="width:300px; margin:0px auto">
+							<div class="pure_button" style="float:left;width:30px; height:35px;margin: 4px 4px 0px 0px" id="tasto_chiudi_mappa"><img src="img/chiudi_mappa.png" style="margin:1px 0px 0px 0px"></div>
+							<div id="carousel_mappa" style="height:45px">
+								<ul id="side-bar-map-risultati" style="background:none;float:left" > 
+									<!-- <li> pompati dinamicamente  -->	
+								</ul> 
+							</div>
+							<div class="pure_button"  style="float:left;width:30px; height:35px;margin: 4px 0px 0px -4px" id="itinerario_button"> <img src="img/itinerario.png" style="margin:1px 0px 0px 0px"></div>
+						</div>
+					</div>	
+				</div> 
+			</page>
+			
+			<!-- ITINERARIO -->
+			<page id="page_itinerario" scrollable="false" >
+				<div class="bar_itinerario">
+					<div class="pure_button" style="float:left;width:30px; height:35px;margin: 4px 10px 4px 4px" id="tasto_chiudi_itinerario"><img src="img/chiudi_mappa.png" style="margin:1px 0px 0px 0px"></div>
+					<div style="margin:5px 3px 0px 10px; color:#fff"><font style="font-size:12px"><span class="i18n">Indicazioni stradali per</span>:<br></font><span style="font-size:14px;font-weight: bold;text-shadow: rgba(0, 0, 0, 0.5) 0px -1px 0; " id="titolo_itinerario"></span></div>
+				</div>		
+				<div id="itinerario"  style="position:absolute; top:33px" ></div>
+			</page>
+		
+			<!-- DETTAGLIO -->
+			<page id="page_dettaglio" scrollable="false">
+				
+				<div id="page_dettaglio_c">
+					<!-- DETTAGLIO ATTIVITA'-->
+					<div id="dettaglio_attivita">
+						<div id="wii"></div>
+						<ul class="metal" style="margin:5px">
+			                <li>
+		                		<div style="margin:0px auto; width:290px;height:200px; overflow:hidden">
+									<div id="foto_attivita">
+										<ul style="background:none;float:left" > 
+											<!-- <li> pompati dinamicamente  -->	
+										</ul> 
+									</div>
+								</div>
+							</li>
+							
+							<li><span><span class="i18n">Nome</span>:</span>&nbsp;<span style="color:#f4a91e" id="nome_dettaglio_att">-</span></li>
+							<li><span><span class="i18n">Categoria</span>:</span>&nbsp;<span style="color:#f4a91e" id="categoria_dettaglio_att">-</span></li>
+							<li><span><span class="i18n">Città</span>:</span>&nbsp;<span style="color:#f4a91e" id="citta_dettaglio_att">-</span></li>
+							<li><span><span class="i18n">Indirizzo</span>:</span>&nbsp;<span style="color:#f4a91e" id="indirizzo_dettaglio_att">-</span></li>
+							
+							<li><span><span style="color:#f4a91e; font-size:12px" id="descrizione_dettaglio_att">-</span></li>
+						</ul>
+						<a style="color:rgba(0,0,0,.9);color:#fff" id="mappa_dettaglio_att" data-nome="" class="grayButton"><div style=" float:left"><img src="img/mappa.png" /></div><span class="i18n">Mappa</span></a>
+						<a style="color:rgba(0,0,0,.9);" id="email_dettaglio_att" class="orangeButton"><div style=" float:left"><img src="img/email.png" /></div><span class="i18n">Scrivi Email</span></a>
+						<a style="color:rgba(0,0,0,.9);"  id="cell_dettaglio_att" class="orangeButton"><div style=" float:left"><img src="img/phone.png" /></div><span class="i18n">Chiama (mobile)</span></a>
+						<a style="color:rgba(0,0,0,.9);"  id="tell_dettaglio_att" class="orangeButton"><div style=" float:left"><img src="img/phone.png" /></div><span class="i18n">Chiama (fisso)</span></a>
+					</div>
+					
+					
+					
+					<!-- DETTAGLIO EVENTO-->
+					<div id="dettaglio_evento">
+							<ul class="metal" style="margin:5px">
+			                <li>
+		                		<div style="margin:0px auto; width:290px;height:200px; overflow:hidden">
+									<div id="foto_evento">
+										<ul style="background:none;float:left" > 
+											<!-- <li> pompati dinamicamente  -->	
+										</ul> 
+									</div>
+								</div>
+							</li>
+							
+							<li><span><span class="i18n">Nome</span>:</span>&nbsp;<span style="color:#f4a91e" id="nome_dettaglio_eve">-</span></li>
+							<li><span><span class="i18n">Categoria</span>:</span>&nbsp;<span style="color:#f4a91e" id="categoria_dettaglio_eve">-</span></li>
+							<li><span><span class="i18n">Attività</span>:</span>&nbsp;<span style="color:#f4a91e" id="attivita_dettaglio_eve">-</span></li>
+							<li><span><span class="i18n">Città</span>:</span>&nbsp;<span style="color:#f4a91e" id="citta_dettaglio_eve">-</span></li>
+							<li><span><span class="i18n">Data</span>:</span>&nbsp;<span style="color:#f4a91e" id="data_dettaglio_eve">-</span></li>
+							<li><span><span class="i18n">Ora</span>:</span>&nbsp;<span style="color:#f4a91e" id="ora_dettaglio_eve">-</span></li>
+							<li><span><span style="color:#f4a91e; font-size:12px" id="descrizione_dettaglio_eve">-</span></li>
+						</ul>
+						<a style="color:rgba(0,0,0,.9);color:#fff" id="mappa_dettaglio_eve" data-nome="" class="grayButton"><div style=" float:left"><img src="img/mappa.png" /></div><span class="i18n">Mappa</span></a>
+						<a style="color:rgba(0,0,0,.9);" id="email_dettaglio_eve" class="orangeButton"><div style=" float:left"><img src="img/email.png" /></div><span class="i18n">Scrivi Email</span></a>
+						<a style="color:rgba(0,0,0,.9);"  id="cell_dettaglio_eve" class="orangeButton"><div style=" float:left"><img src="img/phone.png" /></div><span class="i18n">Chiama</span></a>
+						<a style="color:rgba(0,0,0,.9);"  id="tell_dettaglio_eve" class="orangeButton"><div style=" float:left"><img src="img/phone.png" /></div><span class="i18n">Chiama</span></a>
+					</div>
+				</div>
+			
+			</page>			
+			
+			
+			
+			<!-- RISULTATI DI RICERCA-->
+			<page id="page_risultati" title="Risultati"  scrollable="false">
+				<div class="filterBar"  style="height:34px">
+					<div id="normal_filter_bar">
+						<div style="float:left" >
+							<div class="filter_bar_citta_left pure_button button_on" data-id="attivita"  style="margin:2px -4px 0px 2px;width:40px"><span class="i18n">Attività</span></div>
+							<div class=" filter_bar_citta_left pure_button" data-id="eventi"  style="margin:2px 0px 0px 5px;width:40px"><span class="i18n">Eventi</span></div>
+						</div>
+						<div style="float:right">
+							
+							<span class="filter_bar_citta_right pure_button" data-id="tasto_geoloc" id="tasto_geoloc" style="margin:2px 1px 0px 0px; width:18px"><img style="margin-left:-4px" src="img/geoloc.png" /></span>
+							<div class="filter_bar_citta_right pure_button" data-id="a-z-citta" style="margin:2px 1px 0px 0px; width:25px">A-z</div>
+							<div class="filter_bar_citta_right pure_button" data-id="a-z-categoria" style="margin:2px 1px 0px 0px; width:25px">A-z</div>
+							<div class="filter_bar_citta_right pure_button" data-id="categoria"  style="margin:2px 1px 0px 0px; width:50px"><span class="i18n">Categoria</span></div>
+							<div class="filter_bar_citta_right pure_button" data-id="citta"  style="margin:2px 1px 0px 0px; width:50px"><span class="i18n">Città</span></div>
+							<span class="filter_bar_citta_right pure_button" data-id="tasto_cerca" id="tasto_cerca" data-input-hook="search"  style="margin:2px 2px 0px 0px; width:18px"><img style="margin-left:-4px" src="img/cerca.png" /></span>
+							<!--<span class="pure_button" id="tasto_mappa"  style="float:right; margin:2px 3px 0px 0px"><span class="i18n">Mappa</span></span>-->
+						</div>
+					</div>
+					<div id="search_filter_bar" style="display:none">
+						<div style="width:100px; margin:0px auto" >
+							<div class="pure_button_red" id="resetta_ricerca"  style="margin:2px 0px 0px 5px;width:100px"><span class="i18n">Chiudi ricerca</span></div>
+						</div>
+					</div>
+					
+				</div>
+				
+				<div id="fragment_attivita_eventi" style="background-color:#000"> 
+					<ul class="plastic" id="risultati_ricerca_attivita"></ul>
+					<ul class="plastic" id="risultati_ricerca_eventi"></ul>
+					<ul class="plastic" id="fragment_attivita"></ul>
+					<ul class="plastic" id="fragment_eventi"></ul>
+				</div>
+			</page>
+			
+		</panel>
+		
+		<!-- SETTINGS -->
+		
+		<!--
+		<panel id="settings" title="Preferenze" icon="settings.png">
+				<page id="bla" title="homeTitle" scrollable="false">
+				<div  style="padding:10px 15px; width:290px; margin:0px auto" >
+					<div  id="tasto_vicinanza" style="margin-top:10px">
+						<div style="background-image:url(img/ricerca_vicinanza.png); width:260px; height:31px; padding:10px 0px 0px 30px; color: #999;text-shadow: 0 -1px 0 black;text-align: center; font-size:16px"><span class="i18n">Ricerca per Vicinanza</span></div>
+					</div>
+				</div>
+			</page>		
+		</panel>
+		
+		
+		<toolbar></toolbar>
+		-->
+	</content>
+</appml>
+ 
+</body>
+</html> 
+
+
+
+
+
+		
