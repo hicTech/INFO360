@@ -348,7 +348,13 @@ GoogleSpreadsheet = (function() {
 			if(DBget(url)!=null){
 		  	    clearInterval(intervalId);
 		  	 	$("#server_connection_indicator").remove();
-		  	 	var local_result=localStorage.getObject(url,result);
+		  	 	if(navigator.appVersion.indexOf("MSIE") != -1 && parseFloat(navigator.appVersion.split("MSIE")[1]) <= 8){
+		  	 		null
+		  	 	}
+		  	 	else{
+		  	 		var local_result=localStorage.getObject(url,result);
+		  	 	}
+		  	 	
 		  	 	safetyCounter=0;
 		    	return callback(local_result);
 			}
@@ -362,7 +368,12 @@ GoogleSpreadsheet = (function() {
 	  	 if(result!=null && result.data!=null){
 	  	 	clearInterval(intervalId);
 	  	 	$("#server_connection_indicator").remove();
-	  	 	localStorage.setObject(url,result);
+	  	 	if(navigator.appVersion.indexOf("MSIE") != -1 && parseFloat(navigator.appVersion.split("MSIE")[1]) <= 8){
+	  	 		null
+	  	 	}
+	  	 	else{
+	  	 		localStorage.setObject(url,result);
+	  	 	}
 	  	 	console.log("scaricato "+url)
 	  	 	safetyCounter=0;
 	    	return callback(result);

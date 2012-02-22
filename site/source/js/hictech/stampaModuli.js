@@ -46,6 +46,7 @@
 			}
 			
 			function chiudi(){
+				$("input").val("")
 				$("#container_tasti_home").show();
 				$("#page_download").hide();
 				if(visibilita_pag_attivita){
@@ -468,28 +469,28 @@
 				
 		}
 			
-		
-		function cercaAttivita(){
-			
-			var parole_da_ricercare=$("#input_cerca_attivita").val();
+		var trovato_uno_att;
+		function cercaAttivita(text){
+			var parole_da_ricercare = (!!text )? text : $("#input_cerca_attivita").val();
 				
-				if(parole_da_ricercare.length<3){
-					alert("La parola da ricercare deve essere non inferiore ai 3 caratteri!");
-					return;
-				}
-				if(parole_da_ricercare.indexOf("  ")!=-1){
-					alert("Attenzione il testo inserito contiene due o più spazi consecutivi");
-					$("#input_cerca_attivita").val("");
-					return;
-				}
-				
-				
-				$(".box_attivita").hide();
-				parole_da_ricercare=parole_da_ricercare.toLowerCase();
-				var a1 = new Array();
-				a1=parole_da_ricercare.split(" ");
+			if(parole_da_ricercare.length<3){
+				alert("La parola da ricercare deve essere non inferiore ai 3 caratteri!");
+				return;
+			}
+			if(parole_da_ricercare.indexOf("  ")!=-1){
+				alert("Attenzione il testo inserito contiene due o più spazi consecutivi");
+				$("#input_cerca_attivita").val("");
+				return;
+			}
 			
 			
+			
+			$(".box_attivita").hide();
+			parole_da_ricercare=parole_da_ricercare.toLowerCase();
+			var a1 = new Array();
+			a1=parole_da_ricercare.split(" ");
+			
+			trovato_uno_att = false;
 			$(".box_attivita").each(function(){
 				var e=$(this);
 				parole=e.attr("data-nome").toLowerCase()+","+e.attr("data-categoria").toLowerCase()+","+e.attr("data-citta").toLowerCase()+","+e.attr("data-tags").toLowerCase()+","+e.attr("id").replace("box_attivita_","").toLowerCase();
@@ -497,7 +498,6 @@
 				if(e.attr("data-nome").toLowerCase() == parole_da_ricercare.toLowerCase()){
 					$(".box_attivita").hide();
 					e.show();
-					return false;
 				}
 					
 				var a2 = new Array();
@@ -508,14 +508,33 @@
 						if((a2[i].indexOf(a1[j])!=-1 || a1[j].indexOf(a2[i])!=-1) && a2[i]!=""){	
 							//console.log("ecco "+ a2[i]+ " - "+ a1[j]+" oppure "+ a1[j]+" - "+ a2[i]  )
 							e.show();
+							trovato_uno_att = true;
 						}
 					}
 				}
 				
+				
 			});
-			aggiornaTotaleRisultatiDiRicercaAttivita();
-			aggiornaParametriDiRicercaImpostatiAttivita("ricerca parole: "+parole_da_ricercare);
-			updateMapAttivita();
+			
+			
+			if(trovato_uno_att){
+				if(text){
+					$("#input_cerca_attivita").val(parole_da_ricercare);
+					mostra('attivita');
+				}
+				aggiornaTotaleRisultatiDiRicercaAttivita();
+				aggiornaParametriDiRicercaImpostatiAttivita("ricerca parole: "+parole_da_ricercare);
+				updateMapAttivita();
+			}
+			else{
+				$(".box_attivita").show();
+				$("#input_cerca_attivita,#bigInput-att").val("");
+				alert("nessun risultato trovato");
+				
+			}
+			
+			
+			
 
 				
 		}
@@ -950,29 +969,34 @@
 					
 			}
 			
-		function cercaEventi(){
+		
+		var trovato_uno_eve;	
+		function cercaEventi(text){
 			
 			
-			var parole_da_ricercare=$("#input_cerca_eventi").val();
-				
-				if(parole_da_ricercare.length<3){
-					alert("La parola da ricercare deve essere non inferiore ai 3 caratteri!");
-					return;
-				}
-				
-				if(parole_da_ricercare.indexOf("  ")!=-1){
-					alert("Attenzione il testo inserito contiene due o più spazi consecutivi");
-					$("#input_cerca_eventi").val("");
-					return;
-				}
-				
-				
-				$(".box_evento").hide();
-				parole_da_ricercare=parole_da_ricercare.toLowerCase();
-				var a1 = new Array();
-				a1=parole_da_ricercare.split(" ");
+			var parole_da_ricercare = (!!text )? text : $("#input_cerca_eventi").val();
 			
 			
+				
+			if(parole_da_ricercare.length<3){
+				alert("La parola da ricercare deve essere non inferiore ai 3 caratteri!");
+				return;
+			}
+			
+			if(parole_da_ricercare.indexOf("  ")!=-1){
+				alert("Attenzione il testo inserito contiene due o più spazi consecutivi");
+				$("#input_cerca_eventi").val("");
+				return;
+			}
+			
+			
+			$(".box_evento").hide();
+			parole_da_ricercare=parole_da_ricercare.toLowerCase();
+			var a1 = new Array();
+			a1=parole_da_ricercare.split(" ");
+			
+			
+			trovato_uno_eve = false;
 			$(".box_evento").each(function(){
 				var e=$(this);
 				parole=e.attr("data-nome").toLowerCase()+","+e.attr("data-categoria").toLowerCase()+","+e.attr("data-nome_attivita").toLowerCase()+","+e.attr("data-citta").toLowerCase()+","+e.attr("data-tags").toLowerCase()+","+e.attr("id").replace("box_attivita_","").toLowerCase();
@@ -990,15 +1014,33 @@
 					for(var j=0;j<a1.length;j++){
 						//alert("confronto "+a2[i]+" con "+a1[j]+" confronti "+ a2[i].indexOf(a1[j])+" "+a1[j].indexOf(a2[i]))
 						if((a2[i].indexOf(a1[j])!=-1 || a1[j].indexOf(a2[i])!=-1)){	
+							trovato_uno_eve = true;
 							e.show();
 						}
 					}
 				}
 				
 			});
-			aggiornaTotaleRisultatiDiRicercaEventi();
-			aggiornaParametriDiRicercaImpostatiEventi("ricerca parole: "+parole_da_ricercare);
-			updateMapEventi();
+			
+			
+			if(trovato_uno_eve){
+				if(text){
+					$("#input_cerca_eventi").val(parole_da_ricercare);
+					mostra('eventi');
+				}
+				aggiornaTotaleRisultatiDiRicercaEventi();
+				aggiornaParametriDiRicercaImpostatiEventi("ricerca parole: "+parole_da_ricercare);
+				updateMapEventi();
+			}
+			else{
+				$(".box_evento").show();
+				$("#input_cerca_eventi,#bigInput-eve").val("");
+				alert("nessun risultato trovato");
+				
+			}
+			
+			
+			
 
 				
 		}
