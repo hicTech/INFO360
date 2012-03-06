@@ -1,12 +1,15 @@
 var user_lat=44.1067367;
 var user_lon=9.8292189;
 
-navigator.geolocation.getCurrentPosition(foundLocation, noLocation);
+
+navigator.geolocation.getCurrentPosition(foundLocation, noLocation);     
+
+
 
 function foundLocation(position){
+
   user_lat = position.coords.latitude;
   user_lon = position.coords.longitude;
-  
   
  
 }

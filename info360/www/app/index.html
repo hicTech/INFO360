@@ -567,7 +567,6 @@ function appMLReady(){
 	$("#itinerario_button").click(function(){
 		if($("#itinerario").html()==""){
 			appML.appManagerShowDialog({
-				
 	  	    		type                   : "alert", //confirm, select
 	  				title				   : "Attenzione",
 	  				message				   : i18n('Seleziona una destinazione per visualizzarne il percorso')
@@ -806,6 +805,39 @@ function appMLReady(){
 	appML.onPage("page_risultati",function(id_page){ 
 		var scrollable=$("#fragment_attivita_eventi");
 		attivaRigheAttivitaEventi();
+		$("#"+id_page).find(".thumb_attivita").each(function(){
+			if($(this).data("premium") == true){
+				if($(this).is(":visible") && $(this).find(".thumb_loading_image").html()!=null){
+					$(this).pwi({
+					            username: commonsSettings.picasaUser,
+					            mode: 'albums',
+								albumThumbSize: 65,
+					            albums: ["Att"+$(this).attr("data-picasa-id")],
+					            showAlbumTitles: false,
+					            onclickAlbumThumb: function (e) {
+					                return false;
+					            }
+					          });
+				}
+			}
+				
+		});
+		
+		$("#"+id_page).find(".thumb_eventi").each(function(){
+				if($(this).is(":visible") && $(this).find(".thumb_loading_image").html()!=null){
+					$(this).pwi({
+					            username: commonsSettings.picasaUser,
+					            mode: 'albums',
+								albumThumbSize: 65,
+					            albums: ["Eve"+$(this).attr("data-picasa-id")],
+					            showAlbumTitles: false,
+					            onclickAlbumThumb: function (e) {
+					                return false;
+					            }
+					          });
+				}
+			});
+		
 		if( appML.proveniencePage().attr("id")=="page_mappa_risultati" || appML.proveniencePage().attr("id")=="page_dettaglio")
 			return null;
 
@@ -926,10 +958,9 @@ function appMLReady(){
 					mappa.attr("data-nome",id_att)
 				}
 				
-				
-				
 				//scarico e pompo le foto dell'attività
 				var nomeAlbum="Att"+id_att;
+				var thumb_size = ( appML.getEnviroment().isIPad ) ? 520 : 260;
 				console.log("__NOTA__: cerco l'album "+nomeAlbum);
 				$("#foto_attivita > ul").html("");
 				$(".carousel_indicator").html("");
@@ -941,7 +972,7 @@ function appMLReady(){
 				        showAlbumDescription: false,
 				        showAlbumLocation: false,
 						maxresults: 50,
-						thumbSize: 260,
+						thumbSize: thumb_size,
 						mode: 'appMLcarousel',
 						album: nomeAlbum
 				});
@@ -1382,7 +1413,7 @@ function appMLReady(){
 					
 					
 					<div style="margin:-45px 0px 0px -40px"><img src="img/logoInfo360.png"/></div>
-					<div style="margin-top:-65px; padding:10px"><br><spna class="i18n">Scopri come è semplice e divertente ricercare i tuoi eventi preferiti e le attività più vicine a te consigliate dal network info360. Da oggi in poi tutte le informazioni per il tuo tempo libero sono a portata di dito!</spna></div>
+					<div style="margin-top:-65px; padding:10px"><br><span  class="CONF testoParagrafoHomeApp"></span></div>
 					<div style="background-image:url(img/sfondo_header_piccolo_home.png); width:100%; height:30px; padding-top:7px">
 						<div style="background-image:url(img/voci_header_piccolo_home.png); width:302px; height:25px; margin:0px auto">
 							<div style="padding-top:2px;width:302px; margin:0px auto;position:relative">
@@ -1462,7 +1493,7 @@ function appMLReady(){
 						<div id="wii"></div>
 						<ul class="metal" style="margin:5px">
 			                <li>
-		                		<div style="margin:0px auto; width:290px;height:200px; overflow:hidden">
+		                		<div class="container_foto_dettaglio">
 									<div id="foto_attivita">
 										<ul style="background:none;float:left" > 
 											<!-- <li> pompati dinamicamente  -->	
@@ -1490,7 +1521,7 @@ function appMLReady(){
 					<div id="dettaglio_evento">
 							<ul class="metal" style="margin:5px">
 			                <li>
-		                		<div style="margin:0px auto; width:290px;height:200px; overflow:hidden">
+		                		<div class="container_foto_dettaglio">
 									<div id="foto_evento">
 										<ul style="background:none;float:left" > 
 											<!-- <li> pompati dinamicamente  -->	

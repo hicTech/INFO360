@@ -56,9 +56,12 @@
 }
 
 .riga_evento,.riga_attivita{
-	height:45px;
+	height:72px;
 }
-
+.dati_riga{
+	float:left; width:67%; font-size:13px;
+	margin: 17px 0px 0px 12px
+}
 
 /*
  * SEARCH BAR
@@ -582,7 +585,19 @@ line-height:22px;
 
 
 
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+	.container_foto_dettaglio{
+		margin:0px auto; width:570px;height:330px; overflow:hidden
+	}	
+}
 
+/* iPhone (portrait & landscape) */
+@media only screen and (max-device-width: 480px) {
+	
+	.container_foto_dettaglio{
+		margin:0px auto; width:290px;height:200px; overflow:hidden
+	}
+}
 
 
 

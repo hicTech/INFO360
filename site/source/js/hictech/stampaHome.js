@@ -13,7 +13,7 @@ function componiHome(){
 	
 	$.each (JSONattivita, function (index,v){
 		var i=0;
-		if( v.Consigliato== "si" && i<3){
+		if( v.Consigliato== "si" && i<8){
 			i++;
 			$("#attivita_consigliate").append(daiSingolaAttivitaInEvidenza(v));
 		}

@@ -113,9 +113,10 @@ function creaAttivita(result){
 		return result;
 
 	}
-	
+
 	function daiRigaAttivita(r){
 		var id=picasaAlbumName(r.Nome);
+		var premium = (r.Premium == "no" || r.Premium == "###") ? false : true;
 		var nome_att=r.Nome;
 		if(appML.getEnviroment().isIDevice && !appML.getEnviroment().isIPad )
 			nome_att=tronca(nome_att,28);
@@ -134,10 +135,12 @@ function creaAttivita(result){
 			
 		var result= '<li class="arrow riga_attivita" data-lon="'+r.Lon+'" data-lat="'+r.Lat+'" data-id-attivita="'+id+'" data-nome="'+r.Nome+'" data-categoria="'+categoria+'" data-citta="'+citta+'" data-indirizzo="'+r.Indirizzo+'" data-descrizione="'+r.Descrizione+'" data-id-citta="'+getPicasaAlbumName(citta)+'" data-id-categoria="'+getPicasaAlbumName(categoria)+'" data-cell="'+r.Cell+'" data-tell="'+r.Tell+'" data-email="'+r.Email+'" data-tags="'+r.Tag+'" >'+
 			        '<div>'+
-			           '<div style="float:left; width:37px; margin:0px 3px 0px 2px" class="thumb thumb_attivita" data-picasa-id="'+id+'" >'+
-			           		'<div class="'+getPicasaAlbumName(categoria).toLowerCase()+'"/>'+
-			           '</div>'+
-			           '<div style="float:left; width:70%; font-size:13px">'+
+			            '<div style="float:left; width:57px; margin:4px 3px 0px 5px" class="thumb thumb_attivita" data-premium="'+premium+'" data-picasa-id='+id+'><div  class="'+getPicasaAlbumName(categoria).toLowerCase()+' thumb_loading_image"/></div>'+  //<img src="img/thumb_loading.png" class="thumb_loading_image" />
+			           	
+			          // '<div style="float:left; width:37px; margin:0px 3px 0px 2px" class="thumb thumb_attivita" data-picasa-id="'+id+'" >'+
+			           	//	'<div class="'+getPicasaAlbumName(categoria).toLowerCase()+'"/>'+
+			           //'</div>'+
+			           '<div class="dati_riga">'+
 			           		'<div><div style="color:#fff; text-align:left">'+nome_att+'</div></div>'+
 			           		'<div class="label_categoria" style="margin-top:-1px">'+i18n("Categoria").substr(0,5)+'.: <span class="arancio">'+i18n(categoria.capitalize())+'</span></div>'+
 			           		'<div class="label_categoria" style="margin-top:-1px">'+i18n("Città")+'.: <span class="arancio">'+citta.capitalize()+'</span></div>'+
@@ -252,8 +255,8 @@ function creaEventi(result){
 		var nome=r.Nome_evento;
 		if(appML.getEnviroment().isIDevice && !appML.getEnviroment().isIPad )
 			nome=tronca(nome,28);
-		var id=getPicasaAlbumName(nome);
-		
+		var id=picasaAlbumName(nome);
+
 		if(DBget("riga_evento_"+id)!=null && DBget("riga_evento_"+id)!="" ) // mettendo "" nei record local storage forzo il ricalcolo della riga in questione
 			return DBget("riga_evento_"+id);
 		
@@ -270,10 +273,13 @@ function creaEventi(result){
 
 		var result = '<li class="arrow riga_evento" data-id-evento="'+id+'"  data-id-citta="'+getPicasaAlbumName(citta)+'" data-id-categoria="'+getPicasaAlbumName(categoria)+'" data-nome-evento="'+nome+'" data-citta="'+citta+'" data-attivita-evento="'+r.Nome_attivita+'" data-categoria="'+categoria+'" data-descrizione="'+r.Descrizione+'" data-data="'+r.Data+'" data-orario="'+r.Orario+'" data-cell="'+r.Cell+'" data-tell="'+r.Tell+'" data-email="'+r.Email+'" data-tags="'+r.Tag+'" >'+
 			        '<div>'+
-			           '<div style="float:left; width:37px; margin:0px 3px 0px 2px" class="thumb thumb_eventi" data-picasa-id="'+id+'">'+
-			           		'<div class="'+getPicasaAlbumName(categoria).toLowerCase()+'"/>'+
-			           '</div>'+
-			           	'<div style="float:left; width:70%; font-size:13px">'+
+			        	'<div style="float:left; width:57px; margin:4px 3px 0px 5px" class="thumb thumb_eventi" data-picasa-id='+id+'><img src="img/thumb_loading.png" class="thumb_loading_image" /></div>'+
+			           	
+			         
+			           //'<div style="float:left; width:37px; margin:0px 3px 0px 2px" class="thumb thumb_eventi" data-picasa-id="'+id+'">'+
+			           		//'<div class="'+getPicasaAlbumName(categoria).toLowerCase()+'"/>'+
+			           //'</div>'+
+			           	'<div class="dati_riga" >'+
 			           		'<div><div style="color:#fff">'+nome+'</div></div>'+
 			           		'<div class="label_categoria"  style="margin-top:-1px">'+i18n("Categoria").substr(0,5)+'.: <span class="arancio">'+categoria.capitalize()+'</span></div>'+
 			           		'<div class="label_categoria" style="margin-top:-1px">'+i18n("Città")+'.: <span class="arancio">'+citta.capitalize()+'</span></div>'+
@@ -297,7 +303,7 @@ function animaCarouselDettaglio(){
 				if($("#foto_attivita li").size()==1)
 					return false;
 				if( !$("#foto_attivita").parent().parent().is(".carousel_container"))
-					appML.makeCarousel("#foto_attivita","console.log('fatto carousel_att!')",280,190);
+					appML.makeCarousel("#foto_attivita","console.log('fatto carousel_att!')", ( appML.getEnviroment().isIPad ) ? 520 : 280 , ( appML.getEnviroment().isIPad ) ? 320 : 190 );
 				else
 					appML.refreshCarousel("#foto_attivita","console.log('RIfatto carousel_att!')");
 			}
@@ -305,7 +311,7 @@ function animaCarouselDettaglio(){
 				if($("#foto_evento li").size()==1)
 					return false;
 				if( !$("#foto_evento").parent().parent().is(".carousel_container"))
-					appML.makeCarousel("#foto_evento","console.log('fatto carousel_eve!')",280,190);
+					appML.makeCarousel("#foto_evento","console.log('fatto carousel_eve!')", ( appML.getEnviroment().isIPad ) ? 520 : 280 , ( appML.getEnviroment().isIPad ) ? 320 : 190 );
 				else
 					appML.refreshCarousel("#foto_evento","console.log('RIfatto carousel_eve!')");
 			}		
@@ -328,7 +334,7 @@ function iconeMacrocategorie(result){
 			if(j!=result[i].Categorie.length-1)
 				css_rule+=","
 		}
-		target.append(css_rule+"{ background: url(data:image/gif;base64,"+result[i].Base64img+"); width:30px; height:30px; border:none; margin-top:5px }");
+		target.append(css_rule+"{ background: url(data:image/gif;base64,"+result[i].Base64img+"); width:30px; height:30px; border:none; margin:15px }");
 	}
 	
 }

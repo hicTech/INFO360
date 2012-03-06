@@ -26,7 +26,7 @@ function occorrenzeArray(e,a){
 	return n;
 }
 function picasaAlbumName(str){
-
+	
 	var f=escape(str);
 	if(f.substr(f.length-4)=="%20A")
 		f=f.replace("%20A","");

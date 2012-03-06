@@ -1,7 +1,18 @@
 var user_lat=44.1067367;
 var user_lon=9.8292189;
 
-navigator.geolocation.getCurrentPosition(foundLocation, noLocation);
+
+$(function(){
+  document.addEventListener("deviceready", onDeviceReady, false);
+})
+
+function onDeviceReady() {
+ setTimeout(function(){
+ 	navigator.geolocation.getCurrentPosition(foundLocation, noLocation); 
+ },3000)
+}
+
+
 
 function foundLocation(position){
   user_lat = position.coords.latitude;
@@ -12,7 +23,7 @@ function foundLocation(position){
 }
 function noLocation()
 {
-  alert('Non è possibile rilevare la tua posizione');
+  //alert('Non è possibile rilevare la tua posizione');
 }
 
 
