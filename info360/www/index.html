@@ -111,6 +111,7 @@ function appMLReady(){
 	
 	$("body").append('<div class="overlay_NOLANDSCAPE"></div>');
 	
+	$("body").removeClass("body_splashScreen");
 	
 
 	
@@ -1395,7 +1396,7 @@ function appMLReady(){
 
 </head>
 
-<body data-appml-onload="appMLReady()">
+<body class="body_splashScreen" data-appml-onload="appMLReady()">
 
 <appml>
 	<loading></loading>
