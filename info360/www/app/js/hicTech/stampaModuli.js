@@ -334,7 +334,7 @@ function iconeMacrocategorie(result){
 			if(j!=result[i].Categorie.length-1)
 				css_rule+=","
 		}
-		target.append(css_rule+"{ background: url(data:image/gif;base64,"+result[i].Base64img+"); width:30px; height:30px; border:none; margin:15px }");
+		target.append(css_rule+"{ background: url(data:image/gif;base64,"+result[i].Base64img+"); width:65px; height:65px; border:none; margin:0px }");
 	}
 	
 }
