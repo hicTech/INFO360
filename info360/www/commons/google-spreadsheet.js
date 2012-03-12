@@ -326,7 +326,7 @@ GoogleSpreadsheet = (function() {
     waitUntilLoaded = function() {
      
      if($("#server_connection_indicator").html()=="" || $("#server_connection_indicator").html()==null)
-     	$("body").append("<div style='width:224px; margin:0px auto; padding-top:20px' id='server_connection_indicator'><img src='../commons/img/contacting_server.png'></div>");
+     	$("body").append("<div style='width:224px; margin:0px auto; padding-top:20px' id='server_connection_indicator'><img src='commons/img/contacting_server.png'></div>");
      
 	  //console.log("Richiedo "+safetyCounter)
 	  var result;
